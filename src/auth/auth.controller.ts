@@ -1,24 +1,33 @@
 /**
  * Controlador de Autenticación
  */
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(
-      @Body('username') nombre: string, // Aquí recibe el nombre en lugar de un ID
-      @Body('password') contrasena: string,
+  async login(@Body() loginDto: LoginDto) {
+    const user = await this.authService.validateUser(
+      loginDto.email,
+      loginDto.contrasena_hasheada,
+    );
+
+    if (!user) {
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
+
+    return this.authService.login(user);
+  }
+  @Post('register')
+  register(
+    @Body()
+    registerDto: RegisterDto,
   ) {
-      const user = await this.authService.validateUser(nombre, contrasena);
-  
-      if (!user) {
-          throw new Error('Credenciales inválidas');
-      }
-  
-      return this.authService.login(user);
+    return this.authService.register(registerDto);
   }
 }

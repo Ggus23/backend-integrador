@@ -7,27 +7,43 @@ import { CulturalExchangeModule } from './cultura-exchange/cultura-exchange.modu
 import { ChatModule } from './chat/chat.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { SchoolsModule } from './schools/schools.module';
 
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: '',
-      database: 'integrador',
+      host: process.env.HOST,
+      port: parseInt(process.env.DB_PORT ?? '5437'),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
+      ssl: process.env.POSTGRES_SSL === "true",
+      extra: {
+        ssl:
+          process.env.POSTGRES_SSL === "true"
+            ? {
+                rejectUnauthorized: false,
+              }
+            : null,
+      },
     }),
+    SchoolsModule,
     UserModule,
     ResourcesModule,
     ProjectsModule,
     ParticipantsModule,
     CulturalExchangeModule,
     ChatModule,
-    AuthModule
+    AuthModule,
+    SchoolsModule
   ],
   controllers: [],
   providers: [],

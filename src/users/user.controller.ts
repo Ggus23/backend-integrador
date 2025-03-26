@@ -1,34 +1,35 @@
 /**
- * Controlador de Proyectos
+ * Controlador de usuarios
  */
 import { Controller, Post, Get, Put, Delete, Body,Param } from '@nestjs/common';
 import { UsersService } from './user.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly projectsService: UsersService) {}
+  constructor(private readonly userservices: UsersService) {}
 
-  @Post('create')
-  async create(@Body('nombre') nombre: string, @Body('email') email: string, @Body('contrasena_hasheada') contrasena_hasheada: string, @Body('contrasena_hasheada') rol: string) {
-    return this.projectsService.create(nombre, email, contrasena_hasheada, rol);
+  @Post()
+  async create(@Body() createUserDto: CreateUserDto) {
+    return this.userservices.create(createUserDto);
   }
   @Get()
   async findAll() {
-    return this.projectsService.findAll();
+    return this.userservices.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: number) {
-    return this.projectsService.findOne(id);
+    return this.userservices.findOne(id);
   }
 
   @Put(':id')
   async update(@Param('id') id: number, @Body('nombre') nombre: string, @Body('email') email: string, @Body('contrasena_hasheada') contrasena_hasheada: string, @Body('contrasena_hasheada') rol: string) {
-    return this.projectsService.update(id, nombre, email, contrasena_hasheada, rol);
+    return this.userservices.update(id, nombre, email, contrasena_hasheada, rol);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: number) {
-    return this.projectsService.remove(id);
+    return this.userservices.remove(id);
   }
 } 

@@ -1,29 +1,61 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../users/user.entity';
-import * as bcrypt from 'bcrypt';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { UsersService } from '../users/user.service';
+import { RegisterDto } from './dto/register.dto';
+import * as bcryptjs from 'bcryptjs';
+import { JwtService } from '@nestjs/jwt';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class AuthService {
     constructor(
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>, // ✅ Ahora userRepository está disponible
+        private readonly usersService: UsersService,
+        private jwtService: JwtService,
     ) {}
 
-    async validateUser(nombre: string, password: string): Promise<User | null> {
-        const user = await this.userRepository.findOne({
-            where: { nombre },
-            select: ['id_usuario', 'nombre', 'email', 'rol', 'contrasena_hasheada'], // Asegurar que incluya la contraseña
+    async validateUser(nombre: string, contrasena: string) {
+        const user = await this.usersService.findOneByEmailWhithPassword(nombre);
+
+        if (user && await bcryptjs.compare(contrasena, user.contrasena_hasheada)) {
+            return user; // Autenticación exitosa, devuelve el usuario
+        }
+
+        return null; // Autenticación fallida
+    }
+
+    async register({ nombre, email, contrasena_hasheada, rol, colegio }: RegisterDto) {
+        const user = await this.usersService.findOneByEmail(email);
+
+        if (user) {
+            throw new BadRequestException('User already exists');
+        }
+
+        await this.usersService.create({
+            nombre,
+            email,
+            rol,
+            contrasena_hasheada: await bcryptjs.hash(contrasena_hasheada, 10),
+            colegio: colegio, // Pasa colegio directamente como string
         });
 
-        if (!user) return null; // Usuario no encontrado
-
-        const isPasswordValid = await bcrypt.compare(password, user.contrasena_hasheada);
-        return isPasswordValid ? user : null;
+        return {
+            nombre,
+            email,
+        };
     }
 
     async login(user: User) {
-        return { message: 'Inicio de sesión exitoso', user };
+        const payload = { email: user.email, role: user.rol };
+
+        const token = await this.jwtService.signAsync(payload);
+        return {
+            token,
+            email: user.email,
+            name: user.nombre,
+            role: user.rol,
+        };
+    }
+
+    async profile({ email }: { email: string; role: string }) {
+        return await this.usersService.findOneByEmail(email);
     }
 }

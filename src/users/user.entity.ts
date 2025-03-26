@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinColumn, ManyToOne } from 'typeorm';
 import { Resource } from '../resources/resources.entity';
 import { Participants } from 'src/participants/participants.entity';
 import { Chats } from '../chat/chat.entity';
 import { CulturalExchange } from 'src/cultura-exchange/cultura-exchange.entity';
+import { School } from 'src/schools/school.entity';
 
 @Entity()
 export class User {
@@ -21,6 +22,10 @@ export class User {
   @Column()
   rol: string;
 
+  @ManyToOne(() => School, school => school.usuarios)
+  @JoinColumn({ name: 'id_colegio' })
+  colegio: School;
+  
   @OneToMany(() => Resource, resource => resource.usuario)
   recursos: Resource[];
 

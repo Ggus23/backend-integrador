@@ -19,8 +19,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return this.userservices.findOne(id);
+  async findOne(@Param('id_usuario') id_usuario: number) {
+    return this.userservices.findOne(id_usuario);
   }
 
   @Put(':id')

@@ -50,7 +50,7 @@ export class UsersService {
     findOneByEmailWhithPassword(email: string) {
         return this.usersRepository.findOne({
             where: { email },
-            select: ['id_usuario', 'nombre', 'email', 'contrasena_hasheada', 'rol', 'recursos'],
+            select: ['id_usuario', 'nombre', 'email', 'rol', 'recursos', 'participaciones', 'mensajes', 'contrasena_hasheada'],
         });
     }
 

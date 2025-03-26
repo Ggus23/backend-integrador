@@ -8,7 +8,7 @@ import {
   
   export class UpdateUserDto {
     @IsString()
-    @MinLength(3)
+    @MinLength(4)
     @IsOptional()
     nombre?: string;
   

@@ -24,10 +24,11 @@ export class UsersController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: number, @Body('nombre') nombre: string, @Body('email') email: string, @Body('contrasena_hasheada') contrasena_hasheada: string, @Body('contrasena_hasheada') rol: string) {
-    return this.userservices.update(id, nombre, email, contrasena_hasheada, rol);
-  }
-
+async update(@Param('id') id: number, @Body() updateData: { nombre: string, email: string, rol: string }) {
+  console.log("Received ID:", id);
+  console.log("Received Body:", updateData);
+  return this.userservices.update(id, updateData.nombre, updateData.email, updateData.rol);
+}
   @Delete(':id')
   async remove(@Param('id') id: number) {
     return this.userservices.remove(id);

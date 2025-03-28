@@ -7,6 +7,9 @@ import {
   } from 'class-validator';
   
   export class UpdateUserDto {
+    @IsOptional()
+    id_usuario?: number;
+
     @IsString()
     @MinLength(4)
     @IsOptional()

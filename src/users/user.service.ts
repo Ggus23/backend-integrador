@@ -54,10 +54,15 @@ export class UsersService {
         });
     }
 
-    async update(id: number, nombre: string, email: string, contrasena_hasheada: string, rol: string) {
-        await this.usersRepository.update(id, { nombre, email, contrasena_hasheada, rol });
-        return this.findOne(id);
-    }
+    async update(id: number, nombre: string, email: string, rol: string) {
+        try {
+          await this.usersRepository.update(id, { nombre, email, rol });
+          return this.findOne(id);
+        } catch (error) {
+          console.error("Error updating user:", error);
+          throw error;
+        }
+      }
 
     async remove(id: number) {
         return this.usersRepository.delete(id);

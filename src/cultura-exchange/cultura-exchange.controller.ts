@@ -7,7 +7,7 @@ import { CulturalExchangeService } from './cultura-exchange.service';
 export class CulturalExchangeController {
   constructor(private readonly culturalExchangeService: CulturalExchangeService) {}
 
-  @Post('create')
+  @Post()
   async create( @Body('tipo_contenido') tipo_contenido: string, @Body('descripcion') descripcion: string) {
     return this.culturalExchangeService.create(tipo_contenido, descripcion );
   }

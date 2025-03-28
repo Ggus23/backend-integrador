@@ -7,7 +7,7 @@ import { ResourcesService } from './resources.service';
 export class resourcesService {
   constructor(private readonly resourcesServices: ResourcesService) {}
 
-  @Post('create')
+  @Post()
   async create(@Body('tipo_proyecto') tipo_proyecto: string, @Body('description') description: string, @Body('url') url: string ) {
     return this.resourcesServices.create(tipo_proyecto, description);
   }

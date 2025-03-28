@@ -12,7 +12,7 @@ export class AuthService {
         private jwtService: JwtService,
     ) {}
 
-    async validateUser(nombre: string, contrasena: string) {
+    async validateUser( nombre: string, contrasena: string) {
         const user = await this.usersService.findOneByEmailWhithPassword(nombre);
 
         if (user && await bcryptjs.compare(contrasena, user.contrasena_hasheada)) {
@@ -44,18 +44,19 @@ export class AuthService {
     }
 
     async login(user: User) {
-        const payload = { email: user.email, role: user.rol };
+        const payload = { id:user.id_usuario ,email: user.email, role: user.rol };
 
         const token = await this.jwtService.signAsync(payload);
         return {
-            token,
+            id:user.id_usuario,
             email: user.email,
             name: user.nombre,
             role: user.rol,
+            token,
         };
     }
 
-    async profile({ email }: { email: string; role: string }) {
+    async profile({ email }: { id:number, email: string; role: string }) {
         return await this.usersService.findOneByEmail(email);
     }
 }

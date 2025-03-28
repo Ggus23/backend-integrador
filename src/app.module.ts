@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { SchoolsModule } from './schools/schools.module';
+import { CategoriesModule } from './categories/categories.module';
 
 
 @Module({
@@ -18,7 +19,7 @@ import { SchoolsModule } from './schools/schools.module';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.HOST,
+      host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT ?? '5437'),
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
@@ -43,7 +44,8 @@ import { SchoolsModule } from './schools/schools.module';
     CulturalExchangeModule,
     ChatModule,
     AuthModule,
-    SchoolsModule
+    SchoolsModule,
+    CategoriesModule
   ],
   controllers: [],
   providers: [],

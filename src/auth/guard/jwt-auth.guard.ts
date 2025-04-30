@@ -1,45 +1,25 @@
-// src/auth/jwt-auth.guard.ts
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { JwtPayload } from "../auth.types";
-import { School } from 'src/schools/school.entity';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+  constructor(private readonly jwtService: JwtService) {}
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
-    const token = this.extractToken(request);
-    
+    const token = request.cookies['jwt'];
+
     if (!token) {
-      throw new UnauthorizedException('Token no proporcionado');
+      throw new UnauthorizedException('No token found in cookies');
     }
 
     try {
-      const payload = this.jwtService.verify<JwtPayload>(token);
-      // Asignamos solo el id_usuario para mantenerlo seguro
-      request.user = { 
-        id_usuario: payload.id_usuario,
-        nombre: '',
-        email: '',
-        contrasena_hasheada: '',
-        rol: '',
-        colegio: null as unknown as School, // Add appropriate default value or adjust type
-        recursos: [], // Add appropriate default value
-        participaciones: [], // Add appropriate default value
-        mensajes: [], // Add appropriate default value
-        intercambiosCulturales: [] // Add appropriate default value
-      };
+      const payload = this.jwtService.verify(token);
+      request['user'] = payload; // opcional, por si quieres acceder luego
       return true;
-    } catch {
-      throw new UnauthorizedException('Token inválido');
+    } catch (err) {
+      throw new UnauthorizedException('Invalid token');
     }
-  }
-
-  private extractToken(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
   }
 }

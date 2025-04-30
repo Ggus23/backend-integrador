@@ -1,14 +1,19 @@
-// src/schools/schools.controller.ts
-import { Controller, Get } from '@nestjs/common';
-import { SchoolsService } from './schools.service';
-import { School } from './school.entity';
+import { Controller, Get, UseFilters } from '@nestjs/common';
+import { SchoolService } from './schools.service';
 
-@Controller('schools')
-export class SchoolsController {
-  constructor(private schoolsService: SchoolsService) {}
+export interface ColegioInfo {
+  id: string;
+  nombre: string;
+  distrito?: string;
+  zona?: string;
+}
 
-  @Get()
-  async findAll(): Promise<School[]> {
-    return this.schoolsService.findAll();
+@Controller('schools') // Define el prefijo de la ruta
+export class SchoolController {
+  constructor(private readonly colegiosService: SchoolService) {}
+
+  @Get() // Mapea la petición GET a esta función
+  async getColegios(): Promise<ColegioInfo[]> {
+    return this.colegiosService.findAll();
   }
 }

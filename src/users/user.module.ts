@@ -5,11 +5,12 @@ import { User } from './user.entity';
 import { UsersService } from './user.service';
 import { School } from 'src/schools/school.entity';
 import { UsersController } from './user.controller';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
     imports: [TypeOrmModule.forFeature([User, School])],
     controllers: [UsersController],
-    providers: [UsersService],
+    providers: [UsersService, JwtService ],
     exports: [TypeOrmModule, UsersService], // Agrega esta línea
 })
 export class UserModule {}

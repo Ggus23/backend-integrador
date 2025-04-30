@@ -22,7 +22,7 @@ import {
   
     @IsString()
     @IsOptional()
-    contrasena_hasheada?: string;
+    contrasena?: string;
   
     @IsString()
     @IsOptional()

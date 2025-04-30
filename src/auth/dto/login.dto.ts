@@ -9,5 +9,5 @@ export class LoginDto {
   @IsString()
   @MinLength(5)
   @Transform(({ value }) => value.trim())
-  contrasena_hasheada: string;
+  contrasena: string;
 }

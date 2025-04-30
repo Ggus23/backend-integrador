@@ -4,6 +4,7 @@ import { Participants } from 'src/participants/participants.entity';
 import { Chats } from '../chat/chat.entity';
 import { CulturalExchange } from 'src/cultura-exchange/cultura-exchange.entity';
 import { School } from 'src/schools/school.entity';
+import { Role } from 'src/common/enums/rol.enum';
 
 @Entity()
 export class User {
@@ -17,13 +18,13 @@ export class User {
   email: string;
 
   @Column()
-  contrasena_hasheada: string;
+  contrasena: string;
 
-  @Column()
+  @Column({type:'enum', default: Role.USER , enum: Role})
   rol: string;
 
   @ManyToOne(() => School, school => school.usuarios)
-  @JoinColumn({ name: 'id_colegio' })
+  @JoinColumn({ name: 'CODIGO_UE' })
   colegio: School;
   
   @OneToMany(() => Resource, resource => resource.usuario)

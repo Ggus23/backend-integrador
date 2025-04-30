@@ -16,11 +16,17 @@ export class UsersService {
     ) {}
 
     async create(createUserDto: CreateUserDto): Promise<User> {
-        let school = await this.schoolsRepository.findOneBy({ nombre: createUserDto.colegio });
+        let school = await this.schoolsRepository.findOneBy({ UNIDAD_EDU: createUserDto.colegio });
 
         if (!school) {
-            // Crea el colegio si no existe
-            school = this.schoolsRepository.create({ nombre: createUserDto.colegio });
+            // Crea el colegio si no existe, llenando también los campos obligatorios
+            school = this.schoolsRepository.create({
+                UNIDAD_EDU: createUserDto.colegio,
+                DISTRITO: 'SIN DISTRITO',      // <--- agregar un valor
+                ZONA: 'SIN ZONA',               // <--- agregar un valor
+                DEPARTAMEN: 'SIN DEPARTAMENTO', // <--- agregar un valor
+                DIRECCION: 'SIN DIRECCION'      // <--- agregar un valor
+            });
             school = await this.schoolsRepository.save(school);
         }
 
@@ -39,7 +45,7 @@ export class UsersService {
     async findOne(id_usuario: number) {
         return this.usersRepository.findOne({
             where: { id_usuario },
-            select: ['id_usuario', 'nombre', 'email', 'rol', 'recursos', 'participaciones', 'mensajes', 'contrasena_hasheada'],
+            select: ['id_usuario', 'nombre', 'email', 'rol', 'recursos', 'participaciones', 'mensajes', 'contrasena'],
         });
     }
 
@@ -50,7 +56,7 @@ export class UsersService {
     findOneByEmailWhithPassword(email: string) {
         return this.usersRepository.findOne({
             where: { email },
-            select: ['id_usuario', 'nombre', 'email', 'rol', 'recursos', 'participaciones', 'mensajes', 'contrasena_hasheada'],
+            select: ['id_usuario', 'nombre', 'email', 'rol', 'recursos', 'participaciones', 'mensajes', 'contrasena'],
         });
     }
 

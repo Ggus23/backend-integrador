@@ -5,12 +5,23 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 @Entity()
 export class School {
   @PrimaryGeneratedColumn()
-  id: number;
+  CODIGO_UE: string;
 
-  @Column({ unique: true })
-  nombre: string;
+  @Column()
+  UNIDAD_EDU: string;
+
+  @Column()
+  DISTRITO: string;
+
+  @Column()
+  ZONA: string;
+
+  @Column()
+  DEPARTAMEN: string;
+
+  @Column()
+  DIRECCION: string;
 
   @OneToMany(() => User, usuario => usuario.colegio)
   usuarios: User[];
-  // Agrega otros campos según sea necesario (dirección, etc.)
 }

@@ -13,11 +13,12 @@ export class RegisterDto {
   @IsString()
   @MinLength(5)
   @Transform(({ value }) => value.trim())
-  contrasena_hasheada: string;
+  contrasena: string;
 
   @IsString()
-  rol: string;
-  
-  @IsString()
   colegio: string;
+  @IsString()
+  @MinLength(4)
+  rol: string; // Cambia a string
 }
+ 

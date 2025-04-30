@@ -9,11 +9,11 @@ export class CreateUserDto {
   email: string;
 
   @IsString()
-  contrasena_hasheada: string;
-
-  @IsString()
-  rol: string;
+  contrasena: string;
 
   @IsString()
   colegio: string; // Cambia a string
+
+  @IsString()
+  rol: string; // Cambia a string
 }

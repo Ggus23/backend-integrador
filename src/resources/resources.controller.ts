@@ -3,7 +3,7 @@
  */
 import { Controller, Post, Body, Get,Put,Param,Delete } from '@nestjs/common';
 import { ResourcesService } from './resources.service';
-@Controller('ResourcesService')
+@Controller('Resources')
 export class resourcesService {
   constructor(private readonly resourcesServices: ResourcesService) {}
 

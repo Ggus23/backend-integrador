@@ -3,5 +3,5 @@ export interface LoginResponse {
     email: string;
     nombre: string;
     rol: string;
-    token: string;
+    access_token: string;
   }

@@ -31,7 +31,7 @@ export class Project {
   @Column()
   Obj_aprendizaje: string;
 
-  @ManyToOne(() => User, usuario => usuario.recursos)
+  @ManyToOne(() => User, usuario => usuario.projects)
   @JoinColumn({ name: 'id_usuario' })
   usuario: User;
 

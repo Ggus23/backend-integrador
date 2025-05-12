@@ -53,7 +53,7 @@ export class AuthService {
             email: user.email,
             nombre: user.nombre,
             rol: user.rol,
-            token,
+            access_token: token, // <- cambia el nombre del campo,
         };
     }
 

@@ -20,8 +20,10 @@ export class UsersController {
   async findAll() {
     return this.userservices.findAll();
   }
-
- 
+  @Get('profesores')
+  findAllProfesores() {
+    return this.userservices.findAllByRol('profesor');
+  }
   @Get(':id')
   async findOne(@Param('id') id_usuario: number) {
     return this.userservices.findOne(id_usuario);

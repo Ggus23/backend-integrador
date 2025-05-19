@@ -16,5 +16,5 @@ export class CreateProjectDto {
   
   @IsNumber()
   @IsOptional() // Marcar como opcional ya que lo obtendremos del token
-  id_usuario?: number; // El signo ? indica que es opcional
+  id_usuario: number; // El signo ? indica que es opcional
 }

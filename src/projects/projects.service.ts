@@ -63,8 +63,11 @@ export class ProjectsService {
   }
 
   async findOne(id_proyecto: number) {
-    return this.projectsRepository.findOne({ where: { id_proyecto } });
-  }
+  return this.projectsRepository.findOne({
+    where: { id_proyecto },
+    relations: ['usuario'],
+  });
+}
    async findByUser(id_usuario: number): Promise<Project[]> {
   return this.projectsRepository.find({
     where: { usuario: { id_usuario } },

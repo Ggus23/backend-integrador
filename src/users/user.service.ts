@@ -52,6 +52,9 @@ export class UsersService {
     findOneByEmail(email: string) {
         return this.usersRepository.findOneBy({ email });
     }
+    findAllByRol(rol: string) {
+        return this.usersRepository.find({ where: { rol } });
+    }
 
     findOneByEmailWhithPassword(email: string) {
         return this.usersRepository.findOne({

@@ -31,7 +31,7 @@ export class Project {
   @Column()
   Obj_aprendizaje: string;
 
-  @ManyToOne(() => User, usuario => usuario.projects)
+  @ManyToOne(() => User, user => user.projects, { eager: false })
   @JoinColumn({ name: 'id_usuario' })
   usuario: User;
 

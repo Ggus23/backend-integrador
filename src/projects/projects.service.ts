@@ -68,13 +68,24 @@ export class ProjectsService {
     relations: ['usuario'],
   });
 }
-   async findByUser(id_usuario: number): Promise<Project[]> {
-  return this.projectsRepository.find({
-    where: { usuario: { id_usuario } },
-    relations: ['usuario', 'categoria'], // Incluye relaciones necesarias
-  });
+    async findByUser(id_usuario: number): Promise<Project[]> {
+    return this.projectsRepository.find({
+      where: { usuario: { id_usuario } },
+      relations: ['usuario', 'categoria'], // Incluye relaciones necesarias
+    });
+  }
+  async obtenerRecientes(): Promise<Project[]> {
+  try {
+    const proyectos = await this.projectsRepository.find({
+      order: { fecha_creacion: 'DESC' },
+      take: 3,
+    });
+    return proyectos;
+  } catch (error) {
+    console.error("Error al obtener proyectos recientes:", error);
+    throw error;
+  }
 }
-
   async update(id_proyecto: number, nombre: string, descripcion: string, fecha_creacion: Date) {
     await this.projectsRepository.update(id_proyecto, { nombre, descripcion, fecha_creacion });
     return this.findOne(id_proyecto);

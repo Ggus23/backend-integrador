@@ -1,11 +1,12 @@
 /**
  * Controlador de Proyectos
  */
-import { Controller, Post, Get, Put, Delete, Body,Param, UseGuards, UnauthorizedException, Request, BadRequestException, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, Get, Put, Delete, Body,Param, UseGuards, UnauthorizedException, Request, BadRequestException, ParseIntPipe, InternalServerErrorException } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project';
 import { RequestWithUser } from 'src/auth/auth.types';
 import { AuthGuard } from '@nestjs/passport';
+import { Project } from './projects.entity';
 
 @Controller('projects')
 export class ProjectsController {
@@ -25,6 +26,15 @@ export class ProjectsController {
   async findAll() {
     return this.projectsService.findAll();
   }
+      @Get('recientes')
+  async getRecentProjects() {
+    try {
+      return await this.projectsService.obtenerRecientes(); // Debe devolver un arreglo
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException('No se pudieron obtener los proyectos recientes');
+    }
+  }
 
   @Get(':id_proyecto')
   async findOne(@Param('id_proyecto') id_proyecto: number) {
@@ -34,6 +44,7 @@ export class ProjectsController {
   findByUser(@Param('id_proyecto', ParseIntPipe) id_proyecto: number) {
     return this.projectsService.findByUser(id_proyecto);
   }
+
   @Put(':id_proyecto')
   async update(@Param('id_proyecto') id_proyecto: number, @Body('nombre') nombre: string, @Body('descripcion') descripcion: string, @Body('fecha_creacion') fecha_creacion: Date) {
     return this.projectsService.update(id_proyecto, nombre, descripcion, fecha_creacion);

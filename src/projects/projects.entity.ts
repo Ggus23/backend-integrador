@@ -25,7 +25,7 @@ export class Project {
   @Column()
   descripcion: string;
 
-  @CreateDateColumn() // Usa CreateDateColumn en lugar de Column
+  @CreateDateColumn({ type: 'timestamp' }) // Usa CreateDateColumn en lugar de Column
   fecha_creacion: Date;
 
   @Column()

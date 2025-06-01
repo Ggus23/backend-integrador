@@ -65,7 +65,7 @@ export class ProjectsService {
   async findOne(id_proyecto: number) {
   return this.projectsRepository.findOne({
     where: { id_proyecto },
-    relations: ['usuario'],
+    relations: ['usuario','categoria'], // Incluye relaciones necesarias
   });
 }
     async findByUser(id_usuario: number): Promise<Project[]> {
@@ -77,6 +77,7 @@ export class ProjectsService {
   async obtenerRecientes(): Promise<Project[]> {
   try {
     const proyectos = await this.projectsRepository.find({
+      relations: ['categoria', 'usuario'],
       order: { fecha_creacion: 'DESC' },
       take: 3,
     });

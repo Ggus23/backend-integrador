@@ -6,7 +6,6 @@ import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project';
 import { RequestWithUser } from 'src/auth/auth.types';
 import { AuthGuard } from '@nestjs/passport';
-import { Project } from './projects.entity';
 
 @Controller('projects')
 export class ProjectsController {
@@ -26,7 +25,7 @@ export class ProjectsController {
   async findAll() {
     return this.projectsService.findAll();
   }
-      @Get('recientes')
+  @Get('recientes')
   async getRecentProjects() {
     try {
       return await this.projectsService.obtenerRecientes(); // Debe devolver un arreglo
@@ -40,9 +39,9 @@ export class ProjectsController {
   async findOne(@Param('id_proyecto') id_proyecto: number) {
     return this.projectsService.findOne(id_proyecto);
   }
-  @Get('usuario/:id_proyecto')
-  findByUser(@Param('id_proyecto', ParseIntPipe) id_proyecto: number) {
-    return this.projectsService.findByUser(id_proyecto);
+  @Get('usuario/:id_usuario')
+  findByUser(@Param('id_usuario', ParseIntPipe) id_usuario: number) {
+    return this.projectsService.findByUser(id_usuario);
   }
 
   @Put(':id_proyecto')

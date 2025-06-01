@@ -35,8 +35,8 @@ export class Project {
   @JoinColumn({ name: 'id_usuario' })
   usuario: User;
 
-  @ManyToOne(() => Category, category => category.projects)
-  @JoinColumn({ name: 'id_categoria' }) // Asegúrate de que este nombre coincida con la columna en Project
+   @ManyToOne(() => Category, category => category.projects)
+  @JoinColumn({ name: 'id_categoria' })
   categoria: Category;
 
   @OneToMany(() => Resource, resource => resource.proyecto)

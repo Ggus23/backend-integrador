@@ -27,6 +27,13 @@ export class ParticipantsService {
     return this.projectsRepository.findOne({ where: { id_usuario, id_proyecto } });
   }
 
+  async findByProyecto(id_proyecto: number): Promise<Participants[]> {
+  return this.projectsRepository.find({
+    where: { id_proyecto },
+    relations: ['usuario'], // Asegúrate de incluir esta relación si la usas
+  });
+  }
+
   async update(id_usuario: number, id_proyecto: number, rol: string) {
     await this.projectsRepository.update({ id_usuario, id_proyecto }, { rol });
     return this.findOne(id_usuario, id_proyecto);
